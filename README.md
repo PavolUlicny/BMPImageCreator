@@ -95,7 +95,7 @@ Renders a text string at the specified position with optional **scaling** and **
 
 ---
 
-### 📀 Saving
+### Saving
 
 #### `void saveFile(const std::string& filename);`
 
