@@ -601,6 +601,7 @@ int main() {
 	// bmp.drawRectangle(10, 10, 90, 90, 0, 255, 0, true);  Draw a filled green rectangle
 	// bmp.drawLine(10, 10, 90, 90, 0, 0, 255);  Draw a blue line
 	// bmp.drawCircle(50, 50, 30, 255, 255, 0, false);  Draw a yellow circle outline
+    // bmp.drawText(10, 10, "Hello,\nBMP World!", 0, 0, 0, 1, true); Black wrapped text
 	// bmp.saveFile("output_image");  Save the BMP image to a file
 
     return 0;
