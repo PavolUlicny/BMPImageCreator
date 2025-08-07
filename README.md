@@ -124,18 +124,16 @@ bmp.saveFile("output_image");
 
 ---
 
-## 🖼️ Font Requirements
+## Font Requirements
 
-* Must be a **24-bit BMP file**
-* Size: `128x48`
-* Layout: ASCII characters in a grid (8×8 cells)
-* Path: `font/font1.bmp`
+* Code only works with the bundled font image.
+* If you wish to use another font, you will have to modify the code.
 
 ---
 
-## 🛅 Compilation
+## Compilation
 
-### 🔧 Compile with g++
+### Compile with g++
 
 ```bash
 g++ -std=c++11 -o bmp_creator main.cpp
@@ -149,6 +147,6 @@ Then run:
 
 ---
 
-## 📃 License
+## License
 
 MIT License – you are free to use, modify, and distribute this code.
