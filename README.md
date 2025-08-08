@@ -6,10 +6,10 @@
 
 ## 📋 Table of Contents
 
-1. [Features]
-2. [API Reference]
-3. [Example]
-4. [License]
+1. Features
+2. API Reference
+3. Example
+4. License
 
 ---
 
