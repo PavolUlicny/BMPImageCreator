@@ -1,152 +1,74 @@
-# 🖼️ BMP Image Creator (C++)
+# BMPImageCreator
 
-This project is a lightweight C++ utility for generating 24-bit BMP image files from scratch.
-It supports drawing basic shapes, rendering text using a custom 8×8 bitmap font, and saving the result as a `.bmp` file — all without external libraries.
-
-> Font used: [Darkrose 8x8 ASCII font](https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified)
+A simple C++ library to generate BMP images with basic drawing primitives and bitmap-font text rendering.
 
 ---
 
 ## Features
 
-*  Create BMP images of any size
-*  Draw pixels, rectangles, lines, and circles
-*  Render text with optional wrapping and scaling
-*  Save the final image as a valid BMP file
-*  Pure C++ — no dependencies beyond the STL
+* Draw pixels, lines, rectangles (filled or outlined), and circles (filled or outlined).
+* Load and render a cropped 8×8 monochrome font from a `.fnt` file with scaling and word wrap.
+* Automatic clipping of out-of-bounds pixels.
+* Pure C++17: no external dependencies beyond the standard library.
 
 ---
 
-## Class: `BMPImageCreator`
+## API Reference
 
-### Constructor
+| Function                                                                                   | Description                                                          |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| `BMPImageCreator(int32_t width, int32_t height)`                                           | Allocate canvas and initialize BMP headers (24-bit color).           |
+| `void setDefaultPixelRGB(int r, int g, int b)`                                             | Fill entire canvas with a solid RGB color (clamped 0–255).           |
+| `void setPixel(int x, int y, int r, int g, int b)`                                         | Set a single pixel at (x,y); ignores out-of-bounds and clamps color. |
+| `void drawRectangle(int x0,int y0,int x1,int y1,int r,int g,int b,bool fill)`              | Draw a filled or outlined rectangle; swaps coords internally.        |
+| `void drawLine(int x0,int y0,int x1,int y1,int r,int g,int b)`                             | Draw a line using Bresenham’s algorithm.                             |
+| `void drawCircle(int cx,int cy,int radius,int r,int g,int b,bool fill)`                    | Draw a circle using the Midpoint algorithm (filled or outline).      |
+| `bool loadFont(const std::string &filename)`                                               | Load and crop a bitpacked 8×8 `.fnt` font with 128 glyphs.           |
+| `void drawText(int x,int y,const std::string &text,int r,int g,int b,int scale,bool wrap)` | Render ASCII text with scaling and word-wrap.                        |
+| `void saveFile(const std::string &filename) const`                                         | Write the canvas to `<filename>.bmp` (BGR, bottom-up rows).          |
+
+---
+
+## Project Structure
+
+```
+core/
+  ├─ bmp_image_creator.cpp
+  ├─ bmp_image_creator.h
+  └─ font.fnt
+example/
+  ├─ example.cpp
+  └─ output_image.bmp
+legacy/
+  └─ bmp_image_creator_legacy.cpp
+```
+
+---
+
+## Usage
 
 ```cpp
-BMPImageCreator(int32_t width, int32_t height);
+#include "core/BMPImageCreator.h"
+
+int main() {
+    BMPImageCreator bmp(100, 100);
+    bmp.setDefaultPixelRGB(255, 0, 0);                            // red background
+    bmp.drawRectangle(10, 10, 90, 90, 0, 255, 0, true);          // filled green box
+    bmp.drawLine(10, 10, 90, 90, 0, 0, 255);                      // blue diagonal
+    bmp.drawCircle(50, 50, 30, 255, 255, 0, false);               // yellow circle outline
+    bmp.drawText(10, 10, "Hello,\nBMP world!", 0, 0, 0, 1, true); // wrapped text
+    bmp.saveFile("output_image");                              // writes "output_image.bmp"
+    return 0;
+}
 ```
-
-Initializes the BMP image with the specified size. If width/height are invalid, defaults to 10×5 pixels.
-
 ---
 
-### Drawing Functions
+## Font
 
-#### `void setDefaultPixelRGB(int r, int g, int b);`
-
-Fills the entire image with a single background color (RGB). Values are clamped to 0–255.
-
----
-
-#### `void setPixel(int32_t x, int32_t y, int r, int g, int b);`
-
-Sets the color of a single pixel at position `(x, y)`.
-Ignores coordinates outside the image boundary.
-
----
-
-#### `void drawRectangle(int32_t x, int32_t y, int32_t x1, int32_t y1, int r, int g, int b, bool fill);`
-
-Draws a rectangle between `(x, y)` and `(x1, y1)`.
-
-* `fill = true` → filled rectangle
-* `fill = false` → border only
-
----
-
-#### `void drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int r, int g, int b);`
-
-Draws a straight line using **Bresenham’s algorithm**.
-
----
-
-#### `void drawCircle(int32_t centerX, int32_t centerY, int radius, int r, int g, int b, bool fill);`
-
-Draws a circle centered at `(centerX, centerY)`.
-
-* `fill = true` → filled circle
-* `fill = false` → outline only
-* Uses the **Midpoint Circle Algorithm**
-
----
-
-### Text Rendering
-
-#### `bool loadFont();`
-
-Loads and processes the bitmap font from `font1.bmp`.
-
-* Splits the image into 8×8 tiles
-* Converts each character into a `bool` matrix (on/off pixels)
-* Handles placeholder/missing glyphs
-
----
-
-#### `void drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap);`
-
-Renders a text string at the specified position with optional **scaling** and **word wrapping**.
-
-* Automatically crops extra spacing around characters
-* Supports:
-
-  * `\n` for line breaks
-  * Word wrapping at image edge (if `wrap = true`)
-  * Space optimization (cropped characters)
-* Font is lazily loaded on first call
-
----
-
-### Saving
-
-#### `void saveFile(const std::string& filename);`
-
-Saves the image as `filename.bmp`.
-Handles:
-
-* RGB → BGR conversion
-* Bottom-up row order (BMP spec)
-* Header writing
-
----
-
-## Example Usage
-
-```cpp
-BMPImageCreator bmp(200, 150);
-
-bmp.setDefaultPixelRGB(255, 255, 255); // White background
-bmp.drawRectangle(20, 20, 180, 130, 0, 128, 0, true); // Filled green rectangle
-bmp.drawLine(20, 20, 180, 130, 255, 0, 0); // Red diagonal line
-bmp.drawCircle(100, 75, 40, 0, 0, 255, false); // Blue circle outline
-bmp.drawText(10, 10, "Hello,\nBMP World!", 0, 0, 0, 1, true); // Black wrapped text
-
-bmp.saveFile("output_image");
-```
-
----
-
-## Font Requirements
-
-* Code only works with the bundled font image.
-* If you wish to use another font, you will have to modify the code.
-
----
-
-## Compilation
-
-### Compile with g++
-
-```bash
-g++ -std=c++11 -o bmp_creator main.cpp
-```
-
-Then run:
-
-```bash
-./bmp_creator
-```
+Font from darkrose (https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified, converted to `.fnt` (bit images of each char) and cropped)
 
 ---
 
 ## License
 
-MIT License – you are free to use, modify, and distribute this code.
+Everyone is free to **use**, **modify**, and **distribute** this code for any purpose, with or without attribution.

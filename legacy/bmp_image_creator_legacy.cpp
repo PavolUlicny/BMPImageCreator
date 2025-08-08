@@ -153,7 +153,7 @@ public:
         g = std::clamp(g, 0, 255);
         b = std::clamp(b, 0, 255);
         
-		//fet the default pixel RGB color for the entire image
+		//set the default pixel RGB color for the entire image
         for (size_t y = 0; y < height; ++y) {
             for (size_t x = 0; x < width; ++x) {
                 pixels[y][x] = { static_cast<unsigned char>(r), static_cast<unsigned char>(g), static_cast<unsigned char>(b) };
