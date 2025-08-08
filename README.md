@@ -53,11 +53,11 @@ legacy/
 int main() {
     BMPImageCreator bmp(100, 100);
     bmp.setDefaultPixelRGB(255, 0, 0);                            // red background
-    bmp.drawRectangle(10, 10, 90, 90, 0, 255, 0, true);          // filled green box
+    bmp.drawRectangle(10, 10, 90, 90, 0, 255, 0, true);           // filled green box
     bmp.drawLine(10, 10, 90, 90, 0, 0, 255);                      // blue diagonal
     bmp.drawCircle(50, 50, 30, 255, 255, 0, false);               // yellow circle outline
     bmp.drawText(10, 10, "Hello,\nBMP world!", 0, 0, 0, 1, true); // wrapped text
-    bmp.saveFile("output_image");                              // writes "output_image.bmp"
+    bmp.saveFile("output_image");                                 // writes "output_image.bmp"
     return 0;
 }
 ```
