@@ -1,91 +1,73 @@
-BMPImageCreator
+# BMPImageCreator
 
-BMPImageCreator is a lightweight C++ library for generating BMP images with custom drawings and text.
+> A minimal **C++** library for creating BMP images with drawing primitives and bitmap-font text rendering.
 
-Overview of Core Functions
+---
 
-Constructor: BMPImageCreator(int32_t width, int32_t height)
+## 📋 Table of Contents
 
-Initializes a blank canvas of given dimensions.
+1. [Features](#features)
+2. [API Reference](#api-reference)
+3. [Example](#example)
+4. [License](#license)
 
-Computes BMP headers (file header & DIB header) with 24‑bit color.
+---
 
-Allocates and fills the internal pixel buffer (white by default).
+## 🌟 Features
 
-void setDefaultPixelRGB(int r, int g, int b)
+* **Drawing primitives**: lines, rectangles (filled & outlined), circles (filled & outlined)
+* **Bitmap font**: load, crop, scale, wrap, and render 8×8 monochrome fonts
+* **Safe rendering**: automatic clipping of out-of-bounds pixels
+* **Pure C++17**: no external dependencies
 
-Fills the entire canvas with a solid RGB color.
+---
 
-Clamps each channel between 0 and 255.
+## 📚 API Reference
 
-void setPixel(int x, int y, int r, int g, int b)
+| Function                                                                                              | Description                                                        |
+| ----------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Constructor**<br>`BMPImageCreator(int32_t width, int32_t height)`                                   | Allocate a canvas and initialize BMP headers (24-bit color).       |
+| **`void setDefaultPixelRGB(int r, int g, int b)`**                                                    | Fill the canvas with a solid RGB color. Values clamped \[0–255].   |
+| **`void setPixel(int x, int y, int r, int g, int b)`**                                                | Set a single pixel; ignores out-of-bounds and clamps RGB.          |
+| **`void drawRectangle(int x0, int y0, int x1, int y1, int r, int g, int b, bool fill)`**              | Draw a rectangle—filled or border only. Coordinates auto-swapped.  |
+| **`void drawLine(int x0, int y0, int x1, int y1, int r, int g, int b)`**                              | Bresenham’s line algorithm for efficient line drawing.             |
+| **`void drawCircle(int cx, int cy, int radius, int r, int g, int b, bool fill)`**                     | Midpoint Circle Algorithm; filled or outline.                      |
+| **`bool loadFont(const std::string &filename)`**                                                      | Load & crop a 1-bit 8×8 `.fnt` file (128 glyphs). Returns success. |
+| **`void drawText(int x, int y, const std::string &text, int r, int g, int b, int scale, bool wrap)`** | Render ASCII text with word-wrap and scaling.                      |
+| **`void saveFile(const std::string &filename)`**                                                      | Write the canvas to `<filename>.bmp` (BGR, bottom-up rows).        |
 
-Sets a single pixel at (x, y) to the specified RGB color.
+---
 
-Automatically ignores out‑of‑bounds coordinates.
+## 💡 Example
 
-Clamps RGB values to valid range.
-
-void drawRectangle(int x0, int y0, int x1, int y1, int r, int g, int b, bool fill)
-
-Draws a rectangle between (x0,y0) and (x1,y1).
-
-If fill == true, fills the interior; otherwise draws only the border.
-
-Coordinates may be passed in any order (function swaps as needed).
-
-void drawLine(int x0, int y0, int x1, int y1, int r, int g, int b)
-
-Implements Bresenham’s line algorithm.
-
-Efficient integer-based line drawing between two points.
-
-void drawCircle(int centerX, int centerY, int radius, int r, int g, int b, bool fill)
-
-Uses the Midpoint Circle Algorithm.
-
-If fill == true, draws horizontal scanlines; otherwise draws only the perimeter.
-
-Font Loading: bool loadFont(const std::string& filename)
-
-Reads a 1‑bit (8×8) .fnt file containing 128 glyphs.
-
-Stores raw bitmaps in font_chars[char][x][y].
-
-Automatically identifies and removes empty columns for each glyph, populating cropped_chars[char].
-
-Returns true on complete success; leaves existing font data intact on failure.
-
-void drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap)
-
-Renders ASCII text using the loaded font.
-
-Splits input into words, spaces, and newlines.
-
-Measures word pixel width; applies line wrapping if wrap == true.
-
-Draws each glyph scaled by scale at the appropriate position.
-
-void saveFile(const std::string& filename)
-
-Flattens the in‑memory pixel buffer into BMP pixel data (BGR, bottom‑up rows).
-
-Writes the BMP and DIB headers followed by pixel data to <filename>.bmp.
-
-Example Usage
-
+```cpp
 #include "BMPImageCreator.h"
+
 int main() {
+    // Create a 200×100 image
     BMPImageCreator bmp(200, 100);
+
+    // Light gray background
     bmp.setDefaultPixelRGB(240, 240, 240);
+
+    // Draw primitives
     bmp.drawRectangle(10, 10, 190, 90, 0, 128, 255, false);
     bmp.drawLine(0, 0, 199, 99, 255, 0, 0);
     bmp.drawCircle(100, 50, 30, 0, 255, 0, true);
-    bmp.drawText(20, 20, "Hello, BMP!", 0, 0, 0, 2, true);
+
+    // Render scaled, wrapped text
+    bmp.drawText(20, 20, "Hello, BMPImageCreator!", 0, 0, 0, 2, true);
+
+    // Save to BMP
     bmp.saveFile("example_output");
     return 0;
 }
+```
 
-License
+Result: `example_output.bmp` shown below.
 
-This project is licensed under the MIT License. See LICENSE for details.
+---
+
+## 📄 License
+
+**MIT License**. See [LICENSE](LICENSE) for details.
