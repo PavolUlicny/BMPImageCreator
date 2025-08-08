@@ -70,4 +70,4 @@ Result: `example_output.bmp` shown below.
 
 ## 📄 License
 
-**MIT License**. See [LICENSE](LICENSE) for details.
+**MIT License**. Everyone is free to use, modify, and distribute this code for any purpose, with or without attribution.
