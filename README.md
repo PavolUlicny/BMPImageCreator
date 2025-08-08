@@ -1,152 +1,91 @@
-# 🖼️ BMP Image Creator (C++)
+BMPImageCreator
 
-This project is a lightweight C++ utility for generating 24-bit BMP image files from scratch.
-It supports drawing basic shapes, rendering text using a custom 8×8 bitmap font, and saving the result as a `.bmp` file — all without external libraries.
+BMPImageCreator is a lightweight C++ library for generating BMP images with custom drawings and text.
 
-> Font used: [Darkrose 8x8 ASCII font](https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified)
+Overview of Core Functions
 
----
+Constructor: BMPImageCreator(int32_t width, int32_t height)
 
-## Features
+Initializes a blank canvas of given dimensions.
 
-*  Create BMP images of any size
-*  Draw pixels, rectangles, lines, and circles
-*  Render text with optional wrapping and scaling
-*  Save the final image as a valid BMP file
-*  Pure C++ — no dependencies beyond the STL
+Computes BMP headers (file header & DIB header) with 24‑bit color.
 
----
+Allocates and fills the internal pixel buffer (white by default).
 
-## Class: `BMPImageCreator`
+void setDefaultPixelRGB(int r, int g, int b)
 
-### Constructor
+Fills the entire canvas with a solid RGB color.
 
-```cpp
-BMPImageCreator(int32_t width, int32_t height);
-```
+Clamps each channel between 0 and 255.
 
-Initializes the BMP image with the specified size. If width/height are invalid, defaults to 10×5 pixels.
+void setPixel(int x, int y, int r, int g, int b)
 
----
+Sets a single pixel at (x, y) to the specified RGB color.
 
-### Drawing Functions
+Automatically ignores out‑of‑bounds coordinates.
 
-#### `void setDefaultPixelRGB(int r, int g, int b);`
+Clamps RGB values to valid range.
 
-Fills the entire image with a single background color (RGB). Values are clamped to 0–255.
+void drawRectangle(int x0, int y0, int x1, int y1, int r, int g, int b, bool fill)
 
----
+Draws a rectangle between (x0,y0) and (x1,y1).
 
-#### `void setPixel(int32_t x, int32_t y, int r, int g, int b);`
+If fill == true, fills the interior; otherwise draws only the border.
 
-Sets the color of a single pixel at position `(x, y)`.
-Ignores coordinates outside the image boundary.
+Coordinates may be passed in any order (function swaps as needed).
 
----
+void drawLine(int x0, int y0, int x1, int y1, int r, int g, int b)
 
-#### `void drawRectangle(int32_t x, int32_t y, int32_t x1, int32_t y1, int r, int g, int b, bool fill);`
+Implements Bresenham’s line algorithm.
 
-Draws a rectangle between `(x, y)` and `(x1, y1)`.
+Efficient integer-based line drawing between two points.
 
-* `fill = true` → filled rectangle
-* `fill = false` → border only
+void drawCircle(int centerX, int centerY, int radius, int r, int g, int b, bool fill)
 
----
+Uses the Midpoint Circle Algorithm.
 
-#### `void drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int r, int g, int b);`
+If fill == true, draws horizontal scanlines; otherwise draws only the perimeter.
 
-Draws a straight line using **Bresenham’s algorithm**.
+Font Loading: bool loadFont(const std::string& filename)
 
----
+Reads a 1‑bit (8×8) .fnt file containing 128 glyphs.
 
-#### `void drawCircle(int32_t centerX, int32_t centerY, int radius, int r, int g, int b, bool fill);`
+Stores raw bitmaps in font_chars[char][x][y].
 
-Draws a circle centered at `(centerX, centerY)`.
+Automatically identifies and removes empty columns for each glyph, populating cropped_chars[char].
 
-* `fill = true` → filled circle
-* `fill = false` → outline only
-* Uses the **Midpoint Circle Algorithm**
+Returns true on complete success; leaves existing font data intact on failure.
 
----
+void drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap)
 
-### Text Rendering
+Renders ASCII text using the loaded font.
 
-#### `bool loadFont();`
+Splits input into words, spaces, and newlines.
 
-Loads and processes the bitmap font from `font1.bmp`.
+Measures word pixel width; applies line wrapping if wrap == true.
 
-* Splits the image into 8×8 tiles
-* Converts each character into a `bool` matrix (on/off pixels)
-* Handles placeholder/missing glyphs
+Draws each glyph scaled by scale at the appropriate position.
 
----
+void saveFile(const std::string& filename)
 
-#### `void drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap);`
+Flattens the in‑memory pixel buffer into BMP pixel data (BGR, bottom‑up rows).
 
-Renders a text string at the specified position with optional **scaling** and **word wrapping**.
+Writes the BMP and DIB headers followed by pixel data to <filename>.bmp.
 
-* Automatically crops extra spacing around characters
-* Supports:
+Example Usage
 
-  * `\n` for line breaks
-  * Word wrapping at image edge (if `wrap = true`)
-  * Space optimization (cropped characters)
-* Font is lazily loaded on first call
+#include "BMPImageCreator.h"
+int main() {
+    BMPImageCreator bmp(200, 100);
+    bmp.setDefaultPixelRGB(240, 240, 240);
+    bmp.drawRectangle(10, 10, 190, 90, 0, 128, 255, false);
+    bmp.drawLine(0, 0, 199, 99, 255, 0, 0);
+    bmp.drawCircle(100, 50, 30, 0, 255, 0, true);
+    bmp.drawText(20, 20, "Hello, BMP!", 0, 0, 0, 2, true);
+    bmp.saveFile("example_output");
+    return 0;
+}
 
----
+License
 
-### Saving
-
-#### `void saveFile(const std::string& filename);`
-
-Saves the image as `filename.bmp`.
-Handles:
-
-* RGB → BGR conversion
-* Bottom-up row order (BMP spec)
-* Header writing
-
----
-
-## Example Usage
-
-```cpp
-BMPImageCreator bmp(200, 150);
-
-bmp.setDefaultPixelRGB(255, 255, 255); // White background
-bmp.drawRectangle(20, 20, 180, 130, 0, 128, 0, true); // Filled green rectangle
-bmp.drawLine(20, 20, 180, 130, 255, 0, 0); // Red diagonal line
-bmp.drawCircle(100, 75, 40, 0, 0, 255, false); // Blue circle outline
-bmp.drawText(10, 10, "Hello,\nBMP World!", 0, 0, 0, 1, true); // Black wrapped text
-
-bmp.saveFile("output_image");
-```
-
----
-
-## Font Requirements
-
-* Code only works with the bundled font image.
-* If you wish to use another font, you will have to modify the code.
-
----
-
-## Compilation
-
-### Compile with g++
-
-```bash
-g++ -std=c++11 -o bmp_creator main.cpp
-```
-
-Then run:
-
-```bash
-./bmp_creator
-```
-
----
-
-## License
-
-MIT License – you are free to use, modify, and distribute this code.
+This project is licensed under the MIT License. See LICENSE for details.
