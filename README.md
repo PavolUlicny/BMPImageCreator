@@ -63,7 +63,7 @@ int main() {
 ```
 ## Font
 
-* Font from darkrose (https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified, converted to .fnt (bit images of each char) and cropped)
+* Font from darkrose (https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified, converted to .fnt (bit images of each character) and cropped)
 ---
 
 ## License
