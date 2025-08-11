@@ -9,10 +9,15 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <cstdlib> 
+#include <iostream>
 
 //BMPImageCreator class to create BMP images
 class BMPImageCreator {
 private:
+
+    //font path
+    std::string font_path = "font.fnt";
 
     //constants for BMP file format
     static constexpr short file_header_size = 14;
@@ -385,7 +390,9 @@ public:
     void drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap) {
 
         //load font if its not loaded
-        if (!font_loaded && !loadFont("font.fnt")) {
+        if (!font_loaded && !loadFont(font_path)) {
+            std::cerr << "Fatal error: font file not found\n";
+            std::exit(1);
             return;
         }
         font_loaded = true;
