@@ -458,7 +458,7 @@ public:
                 unsigned char c = static_cast<unsigned char>(cc);
 
                 //if its an invalid char or its a space on a new line, ignore it
-                if (c >= cropped_chars.size() || c < 0 || wrapped && c == 32 && current_x == startX) {
+                if (c >= cropped_chars.size() || wrapped && c == 32 && current_x == startX) {
                     continue;
                 }
 
