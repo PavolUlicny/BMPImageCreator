@@ -1,6 +1,7 @@
 // This code is a program that creates BMP images with specified dimensions, colors, shapes and text.
 // You can draw outside the image area, and it will not throw an error because it only draws the pixels that fit within the image dimensions.
 // Font from darkrose (https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified, converted to .fnt (as bit images of each char) and cropped)
+// If it can't find the font file, modify the path through the font_path variable.
 
 //include necessary headers
 #include <fstream>
