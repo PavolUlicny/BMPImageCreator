@@ -1,4 +1,4 @@
-#include "core/bmp_image_creator.h"
+#include "bmp_image_creator.h"
 
 int main() {
     // Example usage of BMPImageCreator
