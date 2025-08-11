@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <algorithm>
+#include <cstdlib> 
+#include <iostream>
 
 // Constructor
 BMPImageCreator::BMPImageCreator(int32_t width1, int32_t height1) {
@@ -242,7 +244,9 @@ bool BMPImageCreator::loadFont(const std::string& filename) {
 
 // Draw text with loaded font
 void BMPImageCreator::drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap) {
-    if (!font_loaded && !loadFont("font.fnt")) {
+    if (!font_loaded && !loadFont(font_path)) {
+        std::cerr << "Fatal error: font file not found\n";
+        std::exit(1);
         return;
     }
     font_loaded = true;
