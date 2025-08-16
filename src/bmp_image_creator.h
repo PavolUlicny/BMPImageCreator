@@ -10,7 +10,7 @@ class BMPImageCreator {
 private:
 
     //font path (change if you're using it outside the repo)
-    std::string font_path = "core/font.fnt";
+    std::string font_path = "../src/font.fnt";
 
     // Constants for BMP format
     static constexpr short file_header_size = 14;

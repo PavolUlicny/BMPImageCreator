@@ -47,7 +47,7 @@ legacy/
 
 ## How to run
 
-* If you're running it with the included example.cpp, what i found works best (if you're compiling with g++) is opening an integrated terminal in the repo folder and running "g++ -I core example/example.cpp core/bmp_image_creator.cpp -o program" and then "./program". This will create a new output image directly in the repo folder
+* If you're running it with the included example.cpp, what i recommend (if you're compiling with g++) is opening an integrated terminal in the example folder and running "g++ -I example example.cpp ../src/bmp_image_creator.cpp -o program" and then run the program. This will create a new output image directly in the repo folder
 
 * If you the program can't find the font (throws an error), change the font path in the header file to the font file location (based on where you're compiling from).
 
