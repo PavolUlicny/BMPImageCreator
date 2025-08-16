@@ -32,18 +32,19 @@
 ---
 
 
+
 ## Project Structure
 
-[src/](src/)  
- ├─ [bmp_image_creator.cpp](src/bmp_image_creator.cpp)  
- ├─ [bmp_image_creator.h](src/bmp_image_creator.h)  
- └─ [font.fnt](src/font.fnt)  
-[example/](example/)
- ├─ [example.cpp](example/example.cpp)
- ├─ [example_program.exe](example/example_program.exe)
- └─ [output_image.bmp](example/output_image.bmp)  
-[legacy/](legacy/)  
- └─ [bmp_image_creator_legacy.cpp](legacy/bmp_image_creator_legacy.cpp)  
+[src/](src/)<br>
+&emsp;├─ [bmp_image_creator.cpp](src/bmp_image_creator.cpp)<br>
+&emsp;├─ [bmp_image_creator.h](src/bmp_image_creator.h)<br>
+&emsp;└─ [font.fnt](src/font.fnt)<br>
+[example/](example/)<br>
+&emsp;├─ [example.cpp](example/example.cpp)<br>
+&emsp;├─ [example_program.exe](example/example_program.exe)<br>
+&emsp;└─ [output_image.bmp](example/output_image.bmp)<br>
+[legacy/](legacy/)<br>
+&emsp;└─ [bmp_image_creator_legacy.cpp](legacy/bmp_image_creator_legacy.cpp)<br>
 
 ---
 
