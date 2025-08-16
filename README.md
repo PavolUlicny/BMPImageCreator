@@ -33,7 +33,6 @@
 
 ## Project Structure
 
-```
 src/
   ├─ [bmp_image_creator.cpp](src/bmp_image_creator.cpp)
   ├─ [bmp_image_creator.h](src/bmp_image_creator.h)
@@ -43,7 +42,6 @@ example/
   └─ [output_image.bmp](example/output_image.bmp)
 legacy/
   └─ [bmp_image_creator_legacy.cpp](legacy/bmp_image_creator_legacy.cpp)
-```
 
 ---
 
