@@ -6,10 +6,10 @@
 #include <array>
 #include <cstdint>
 
-class BMPImageCreator {
+class BMPImageCreator
+{
 private:
-
-    //font path (change if you're using it outside the repo)
+    // font path (change if you're using it outside the repo)
     std::string font_path = "../src/font.fnt";
 
     // Constants for BMP format
@@ -18,8 +18,8 @@ private:
     static constexpr short pixel_info_offset = file_header_size + bitmap_info_header_size;
 
     // BMP file header and DIB header
-    unsigned char file_header[14] = { 0 };
-    unsigned char bitmap_info_header[40] = { 0 };
+    unsigned char file_header[14] = {0};
+    unsigned char bitmap_info_header[40] = {0};
 
     // Image dimensions and properties
     int32_t width;
@@ -59,13 +59,13 @@ public:
     void drawRectangle(int32_t x, int32_t y, int32_t x1, int32_t y1, int r, int g, int b, bool fill);
     void drawLine(int32_t x0, int32_t y0, int32_t x1, int32_t y1, int r, int g, int b);
     void drawCircle(int32_t centerX, int32_t centerY, int32_t radius, int r, int g, int b, bool fill);
-    void drawText(int startX, int startY, const std::string& text, int r, int g, int b, int scale, bool wrap);
+    void drawText(int startX, int startY, const std::string &text, int r, int g, int b, int scale, bool wrap);
 
     // Font loader
-    bool loadFont(const std::string& filename);
+    bool loadFont(const std::string &filename);
 
     // File output
-    void saveFile(const std::string& filename);
+    void saveFile(const std::string &filename);
 };
 
 #endif // BMP_IMAGE_CREATOR_H
