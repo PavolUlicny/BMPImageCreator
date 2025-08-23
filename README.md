@@ -103,3 +103,4 @@ int main() {
 ## License
 
 * Everyone is free to **use**, **modify**, and **distribute** this code for any purpose, with or without attribution.
+* For more info, refer to the [license](LICENSE).
