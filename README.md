@@ -46,19 +46,34 @@
 
 ---
 
-## How to run
+## How to Run
 
-* You can use the included [example_program](example/example_program.exe) executable in the example folder to run example.cpp.
+1. **Open a terminal** and navigate to the project root directory.
 
-* If you want to create a new executable from [example.cpp](example/example.cpp), what i recommend (if you're compiling with g++) is opening an integrated terminal in the [example folder](example/) and running the powershell command below in the terminal. The executable "program" will appear and create the image in the example folder.
+2. **Compile the example program** with the BMPImageCreator library:
 
-```powershell
-g++ -I example example.cpp ../src/bmp_image_creator.cpp -o program
-```
+    ```bash
+    g++ -std=c++17 example/example.cpp src/bmp_image_creator.cpp -o example/example_app
+    ```
+
+    * If you are compiling from a different directory, make sure the paths to the source files are correct.
+
+3. **Run the compiled program:**
+
+    ```bash
+    ./example/example_app
+    ```
+
+4. **Check the output:**  
+    The program will generate a BMP image file (e.g., `output_image.bmp`) in the `example/` directory.
 
 ---
 
-## Debugging 
+If you encounter a "font file not found" error, see the check [Debugging](#debugging) for instructions on setting the correct font path.
+
+---
+
+## Debugging
 
 * If you the program can't find the font (throws an error), change the font path in the [header file](src/bmp_image_creator.h) to the [font file](src/font.fnt) location (based on where you're compiling from).
 
@@ -95,9 +110,11 @@ int main() {
     return 0;
 }
 ```
+
 ## Font
 
-* [Font](src/font.fnt) from darkrose (https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source) (modified, converted to .fnt (bit images of each character) and cropped)
+* [Font](src/font.fnt) from darkrose (<https://opengameart.org/content/8x8-ascii-bitmap-font-with-c-source>) (modified, converted to .fnt (bit images of each character) and cropped)
+
 ---
 
 ## License
